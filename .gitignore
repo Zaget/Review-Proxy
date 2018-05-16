@@ -1,0 +1,10 @@
+templates/services*.js
+
+public/services*.js
+public/transpiled
+public/app.js
+
+node_modules/
+
+newrelic.js
+*.log
