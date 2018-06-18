@@ -4,7 +4,6 @@ const Promise = require('bluebird');
 const exists = Promise.promisify(fs.stat);
 
 const loadBundle = function(cache, item, filename) {
-  // add a small delay to ensure pipe has closed
   setTimeout(() => {
     console.log('loading:', filename);
     cache[item] = require(filename).default;    
@@ -22,7 +21,6 @@ const fetchBundles = (path, services, suffix = '', require = false) => {
         if (err.code === 'ENOENT') {
           const url = `${services[item]}${suffix}.js`;
           console.log(`Fetching: ${url}`);
-          // see: https://www.npmjs.com/package/node-fetch
           fetch(url)
             .then(res => {
               const dest = fs.createWriteStream(filename);
@@ -41,6 +39,5 @@ const fetchBundles = (path, services, suffix = '', require = false) => {
 module.exports = (clientPath, serverPath, services) => {
   fetchBundles(clientPath, services);
   fetchBundles(serverPath, services, '-server', true);
-
   return services;
 };
